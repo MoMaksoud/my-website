@@ -21,10 +21,111 @@ html {
 
 body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, var(--bg-black) 0%, var(--bg-dark) 50%, #1a0a1f 100%);
+    background: var(--bg-black);
     color: var(--text-light);
     line-height: 1.6;
     min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-black) 0%, var(--bg-dark) 50%, #1a0a1f 100%);
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(126, 34, 206, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(192, 132, 252, 0.08) 0%, transparent 50%);
+    animation: gradientShift 20s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(5%, -5%) rotate(120deg);
+    }
+    66% {
+        transform: translate(-5%, 5%) rotate(240deg);
+    }
+}
+
+.floating-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+    animation: float linear infinite;
+}
+
+.shape:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--purple-neon), transparent);
+    top: 20%;
+    left: 10%;
+    animation-duration: 25s;
+    animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--purple-dark), transparent);
+    top: 60%;
+    right: 10%;
+    animation-duration: 30s;
+    animation-delay: -5s;
+}
+
+.shape:nth-child(3) {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, var(--purple-light), transparent);
+    bottom: 20%;
+    left: 50%;
+    animation-duration: 28s;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    33% {
+        transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+        transform: translate(-30px, 30px) scale(0.9);
+    }
 }
 
 /* Navbar */
@@ -142,7 +243,7 @@ nav {
     height: 300px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     border: 4px solid var(--purple-neon);
     box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
     transition: all 0.3s ease;
@@ -156,8 +257,15 @@ nav {
 .hero-content h1 {
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     line-height: 1.2;
+}
+
+.hero-content h2 {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    color: var(--text-gray);
+    margin-bottom: 0.5rem;
 }
 
 .hero-content .gradient-text {
@@ -174,23 +282,36 @@ nav {
     max-width: 600px;
 }
 
-.hero-content h2 {
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    font-weight: 400;
-    color: var(--text-gray);
-    margin-bottom: 1.5rem;
-    max-width: 700px;
-    margin-left: auto;  /* center the block when constrained by max-width */
-    margin-right: auto; /* center the block when constrained by max-width */
-    text-align: center; /* ensure text itself is centered */
-    line-height: 1.6;
+.about-me {
+    max-width: 750px;
+    margin: 1.5rem auto;
+    padding: 1.75rem 2.25rem;
+    background: rgba(26, 26, 26, 0.4);
+    border-radius: 16px;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 }
 
-.hero-content .tagline {
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+.about-me:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.15);
+}
+
+.about-title {
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-weight: 600;
     color: var(--purple-light);
-    margin-top: 0rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.about-text {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    color: var(--text-gray);
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 0;
 }
 
 .cta-button {
@@ -203,6 +324,7 @@ nav {
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    margin-top: 1.5rem;
 }
 
 .cta-button:hover {
@@ -221,7 +343,7 @@ section {
 .section-title {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     text-align: center;
     position: relative;
 }
@@ -232,7 +354,7 @@ section {
     width: 80px;
     height: 4px;
     background: linear-gradient(90deg, var(--purple-neon), var(--purple-light));
-    margin: 1rem auto 0;
+    margin: 0.75rem auto 0;
     border-radius: 2px;
 }
 
@@ -243,33 +365,111 @@ section {
     margin: 2rem auto;
 }
 
-.skills-grid {
+.skills-title::after {
+    background: linear-gradient(90deg, var(--purple-neon), var(--purple-light)) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+}
+
+.skills-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1.5rem;
-    max-width: 900px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-.skill-badge {
-    background: var(--card-bg);
-    padding: 1.5rem 2rem;
-    border-radius: 50px;
+.skill-card {
+    background: linear-gradient(135deg, rgba(26, 10, 31, 0.8), rgba(30, 20, 40, 0.6));
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--purple-neon), var(--purple-light));
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(168, 85, 247, 0.5);
+    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.3), 
+                0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.skill-card:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.8);
+}
+
+.skill-card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--purple-light);
+    margin-bottom: 1.5rem;
     text-align: center;
-    border: 2px solid rgba(168, 85, 247, 0.2);
-    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.skill-badge:hover {
-    transform: translateY(-5px);
-    border-color: var(--purple-neon);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+.skill-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
 }
 
-.skill-badge span {
-    font-size: 1.1rem;
-    font-weight: 600;
+.skill-pill {
+    background: rgba(168, 85, 247, 0.1);
     color: var(--text-light);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    position: relative;
+}
+
+.skill-pill:hover {
+    background: rgba(168, 85, 247, 0.2);
+    border-color: var(--purple-neon);
+    color: var(--purple-light);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4),
+                0 4px 12px rgba(168, 85, 247, 0.2);
+}
+
+.skill-pill:hover::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50px;
+    background: linear-gradient(45deg, transparent, rgba(168, 85, 247, 0.3), transparent);
+    z-index: -1;
+    opacity: 0.6;
+    animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Resume Section */
@@ -286,13 +486,13 @@ section {
 .resume-text {
     font-size: 1.1rem;
     color: var(--text-gray);
-    margin-bottom: 2.5rem;
-    line-height: 1.8;
+    margin-bottom: 1.75rem;
+    line-height: 1.4;
 }
 
 .resume-buttons {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.25rem;
     justify-content: center;
     flex-wrap: wrap;
 }
@@ -524,6 +724,20 @@ footer {
     .profile-img {
         width: 150px;
         height: 150px;
+        margin-bottom: 1rem;
+    }
+
+    .about-me {
+        padding: 1.25rem 1.25rem;
+        margin: 1rem auto;
+    }
+
+    .about-text {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        margin-top: 1rem;
     }
 
     .nav-links {
@@ -564,8 +778,17 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .skills-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .skill-card {
+        padding: 1.5rem;
+    }
+    
+    .skill-card-title {
+        font-size: 1.2rem;
     }
 
     .social-buttons {
